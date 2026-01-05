@@ -5,26 +5,34 @@
 namespace DbOperationWithEFCoreApp.Migrations
 {
     /// <inheritdoc />
-    public partial class AddedLanguageTable : Migration
+    public partial class removedTable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AddColumn<int>(
-                name: "LanguageId",
-                table: "Books",
-                type: "int",
-                nullable: false,
-                defaultValue: 0);
+            migrationBuilder.DropForeignKey(
+                name: "FK_Books_Languages_LanguageId",
+                table: "Books");
 
+            migrationBuilder.DropTable(
+                name: "Languages");
+
+            migrationBuilder.DropIndex(
+                name: "IX_Books_LanguageId",
+                table: "Books");
+        }
+
+        /// <inheritdoc />
+        protected override void Down(MigrationBuilder migrationBuilder)
+        {
             migrationBuilder.CreateTable(
                 name: "Languages",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Title = table.Column<int>(type: "int", nullable: false),
-                    Description = table.Column<int>(type: "int", nullable: false)
+                    Description = table.Column<int>(type: "int", nullable: false),
+                    Title = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -43,25 +51,6 @@ namespace DbOperationWithEFCoreApp.Migrations
                 principalTable: "Languages",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
-        }
-
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Books_Languages_LanguageId",
-                table: "Books");
-
-            migrationBuilder.DropTable(
-                name: "Languages");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Books_LanguageId",
-                table: "Books");
-
-            migrationBuilder.DropColumn(
-                name: "LanguageId",
-                table: "Books");
         }
     }
 }

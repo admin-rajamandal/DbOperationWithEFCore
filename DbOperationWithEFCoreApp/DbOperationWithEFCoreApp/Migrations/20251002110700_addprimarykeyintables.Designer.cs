@@ -4,6 +4,7 @@ using DbOperationWithEFCoreApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbOperationWithEFCoreApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251002110700_addprimarykeyintables")]
+    partial class addprimarykeyintables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,20 +68,13 @@ namespace DbOperationWithEFCoreApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("BookId")
-                        .HasColumnType("int");
+                    b.Property<decimal>("Amount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("BookId");
-
-                    b.HasIndex("CurrencyId");
 
                     b.ToTable("BookPrices");
                 });
@@ -91,43 +87,17 @@ namespace DbOperationWithEFCoreApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Currency")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Title")
+                    b.Property<string>("Description")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
                     b.ToTable("CurrencyTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Indian Rupee",
-                            Title = "INR"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "Euro",
-                            Title = "EUR"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "British Pound",
-                            Title = "GBP"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "United States Dollar",
-                            Title = "USD"
-                        });
                 });
 
             modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Language", b =>
@@ -138,49 +108,15 @@ namespace DbOperationWithEFCoreApp.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Description")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Title")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.ToTable("Languages");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "Hindi Language",
-                            Title = "Hindi"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "English Language",
-                            Title = "English"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "French Language",
-                            Title = "French"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Description = "Spanish Language",
-                            Title = "Spanish"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Description = "German Language",
-                            Title = "German"
-                        });
                 });
 
             modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Book", b =>
@@ -192,25 +128,6 @@ namespace DbOperationWithEFCoreApp.Migrations
                         .IsRequired();
 
                     b.Navigation("Language");
-                });
-
-            modelBuilder.Entity("DbOperationWithEFCoreApp.Data.BookPrice", b =>
-                {
-                    b.HasOne("DbOperationWithEFCoreApp.Data.Book", "Book")
-                        .WithMany()
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("DbOperationWithEFCoreApp.Data.CurrencyType", "Currency")
-                        .WithMany()
-                        .HasForeignKey("CurrencyId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Book");
-
-                    b.Navigation("Currency");
                 });
 
             modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Language", b =>

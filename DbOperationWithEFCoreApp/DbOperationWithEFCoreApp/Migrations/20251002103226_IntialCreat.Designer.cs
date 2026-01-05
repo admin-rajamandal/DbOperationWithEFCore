@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbOperationWithEFCoreApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928113256_AddedLanguageTable")]
-    partial class AddedLanguageTable
+    [Migration("20251002103226_IntialCreat")]
+    partial class IntialCreat
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

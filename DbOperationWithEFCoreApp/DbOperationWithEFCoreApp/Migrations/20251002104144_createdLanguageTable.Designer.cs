@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DbOperationWithEFCoreApp.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250928104439_InitDb")]
-    partial class InitDb
+    [Migration("20251002104144_createdLanguageTable")]
+    partial class createdLanguageTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,6 +43,9 @@ namespace DbOperationWithEFCoreApp.Migrations
                     b.Property<bool>("Is_Active")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LanguageId")
+                        .HasColumnType("int");
+
                     b.Property<int>("NoOfPages")
                         .HasColumnType("int");
 
@@ -52,7 +55,44 @@ namespace DbOperationWithEFCoreApp.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("LanguageId");
+
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Language", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("Description")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Title")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Languages");
+                });
+
+            modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Book", b =>
+                {
+                    b.HasOne("DbOperationWithEFCoreApp.Data.Language", "Language")
+                        .WithMany("Books")
+                        .HasForeignKey("LanguageId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Language");
+                });
+
+            modelBuilder.Entity("DbOperationWithEFCoreApp.Data.Language", b =>
+                {
+                    b.Navigation("Books");
                 });
 #pragma warning restore 612, 618
         }
